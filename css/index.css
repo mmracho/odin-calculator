@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  border: 1px solid red;
+  padding: 0;
+}
+
+header {
+  background-color: #372C38;
+  color: white;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #888595;
+}
+
+.main-content {
+  height: 90vh;
+}
+
+footer {
+  background-color: #372C38;
+  color: white;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+img.ft-imgs {
+  padding: 5px;
+  width: 35px;
+  height: 35px;
+  filter: brightness(0%) saturate(100%) invert(100%);
+}
+
+img.ft-imgs:hover {
+  filter: brightness(80%) saturate(100%);
+}
