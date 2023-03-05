@@ -20,6 +20,55 @@ header {
   height: 90vh;
 }
 
+.calculator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#calc-display {
+  width: 16rem;
+  height: 4rem;
+  box-sizing: border-box;
+  border: 2px solid black;
+  text-align: right;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#current-input {
+  flex: 2;
+  display: flex;
+  font-size: xx-large;
+  justify-content:flex-end;
+  align-items: flex-end;
+}
+
+#calc-buttons {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.calc-button {
+  flex: 0 0 4rem;
+  width: 4rem;
+  height: 4rem;
+  border: 0.1rem solid black;
+  box-sizing: border-box;
+  border-radius: 10%;
+}
+
+.calc-button:hover {
+  filter: brightness(95%);
+}
+
+.calc-button:active {
+  filter: brightness(80%);
+}
+
+
 footer {
   background-color: #372C38;
   color: white;
