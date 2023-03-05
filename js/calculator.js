@@ -22,8 +22,10 @@ const DEFAULT_NUM = '0';
 const DEFAULT_STR = '';
 const MAX_INPUT = 10;
 const currDispInput = document.getElementById('current-input');
+const currDispOperating = document.getElementById('operating');
 let currInput;
-let currOperating;
+let currOperation;
+let currOperator;
 
 
 
@@ -44,16 +46,25 @@ function initializeCalc() {
 function getInput() {
   // if a number add to current input
   if (Number(this.value) || this.value == 0) {
-    // check length max 13
     if (currInput.length < MAX_INPUT) {
       currInput = (currInput == 0) ? this.value : currInput + this.value;
+
     }
-    console.log(currInput.length);
+    console.log(currInput);
     updateCurrentInput();
   } else {  // if not do smelse
     switch (this.value) {
       case 'ce':
-        currInput = DEFAULT_NUM;
+        clearInput();
+        break;
+      case 'c':
+        loadDefaults();
+        break;
+      case 'del':
+        delFromInput();
+        break;
+      case 'plus-minus': // still have issue with maximum values
+        currInput = (-1 * currInput).toString();
         break;
       default:
         console.log('default');
@@ -61,6 +72,14 @@ function getInput() {
     updateCurrentInput();
   }
 
+}
+
+function delFromInput() {
+  if (currInput.length === 1 || currInput.slice(0, -1) == '-') {
+    currInput = DEFAULT_NUM;
+  } else {
+    currInput = currInput.slice(0, -1);
+  }
 }
 
 function updateCurrentInput() {
@@ -98,8 +117,17 @@ function operate(operator, num1, num2) {
   }
 }
 
+function clearInput() {
+  currInput = DEFAULT_NUM;
+}
+
+function loadDefaults() {
+  currInput = DEFAULT_NUM;
+  currOperation = DEFAULT_STR;
+  currOperator = DEFAULT_STR;
+}
+
 window.onload = () => {
   initializeCalc();
-  currInput = DEFAULT_NUM;
-  currOperating = DEFAULT_STR;
+  loadDefaults();
 };
