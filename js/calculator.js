@@ -208,7 +208,7 @@ function operatorTranslator(operator) {
 }
 
 function roundNumbers(num) {
-  return Math.round(num * 10)/10;
+  return Math.round(num * 1000)/1000;
 }
 
 window.onload = () => {
