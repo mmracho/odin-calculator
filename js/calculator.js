@@ -18,8 +18,9 @@ const CALC_BUTTONS = [{ name: 'clear-input', disp: 'CE', value: 'ce', },
 { name: 'number-zero', disp: '0', value: 0, },
 { name: 'decimal', disp: '.', value: '.', },
 { name: 'equals', disp: '=', value: '=', }];
-const DEFAULT_NUM = 0;
+const DEFAULT_NUM = '0';
 const DEFAULT_STR = '';
+const MAX_INPUT = 10;
 const currDispInput = document.getElementById('current-input');
 let currInput;
 let currOperating;
@@ -43,8 +44,11 @@ function initializeCalc() {
 function getInput() {
   // if a number add to current input
   if (Number(this.value) || this.value == 0) {
-    currInput = (currInput == 0) ? this.value : currInput + this.value;
-    console.log(currInput);
+    // check length max 13
+    if (currInput.length < MAX_INPUT) {
+      currInput = (currInput == 0) ? this.value : currInput + this.value;
+    }
+    console.log(currInput.length);
     updateCurrentInput();
   } else {  // if not do smelse
     switch (this.value) {
@@ -60,7 +64,7 @@ function getInput() {
 }
 
 function updateCurrentInput() {
-  currDispInput.textContent = currInput;
+  currDispInput.textContent = Number(currInput).toLocaleString(navigator.language);
 }
 
 function addNumbers(num1, num2) {
