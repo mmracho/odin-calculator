@@ -70,13 +70,17 @@ function getInput() {
         updateCurrentInput(currInput);
         break;
       case 'decimal':
+        if (!currInput.includes('.')) {
+          currInput += '.';
+          updateCurrentInput(currInput);
+        }
         break;
       case 'equals':
-        // if operator empty set currInput and equals
         if (currOperator == DEFAULT_STR) {
-          currDispOperating.textContent = `${prevResult} ${operatorTranslator(this.value)}`;
+          currDispOperating.textContent = `${roundNumbers(currInput)} ${operatorTranslator(this.value)}`;
+          inputFlag = true;
         } else {
-          currDispOperating.textContent = `${prevResult} ${operatorTranslator(currOperator)} ${currInput} ${operatorTranslator(this.value)} `;
+          currDispOperating.textContent = `${roundNumbers(prevResult)} ${operatorTranslator(currOperator)} ${roundNumbers(currInput)} ${operatorTranslator(this.value)} `;
           changedFlag = true;
           operate(currOperator, currInput, prevResult);
         }
@@ -85,11 +89,11 @@ function getInput() {
       default:
         if (currOperator == DEFAULT_STR) {
           if (prevResult == DEFAULT_NUM) {
-            prevResult = currInput;
+            prevResult = roundNumbers(currInput);
             changedFlag = false;
             inputFlag = true;
             currOperator = this.value;
-            updateCurrentInput(currInput);
+            updateCurrentInput(roundNumbers(currInput));
           } else {
             operate(currOperator, currInput, prevResult);
             currOperator = this.value;
@@ -132,7 +136,7 @@ function multiplyNumbers(num1, num2) {
 }
 
 function divideNumbers(num1, num2) {
-    return (roundNumbers(Number(num2) / Number(num1))).toString();
+  return (roundNumbers(Number(num2) / Number(num1))).toString();
 }
 
 function operate(operator, num1, num2) {
@@ -140,25 +144,22 @@ function operate(operator, num1, num2) {
     case 'add':
       if (changedFlag) {
         result = addNumbers(num1, num2);
-        prevResult = result
-        inputFlag = true;
-        changedFlag = false;
+        setPrevResult(result);
+        if (checkMax(result)) break;
       }
       break;
     case 'subtract':
       if (changedFlag) {
         result = subtractNumbers(num1, num2);
-        prevResult = result
-        inputFlag = true;
-        changedFlag = false;
+        setPrevResult(result);
+        if (checkMax(result)) break;
       }
       break;
     case 'multiply':
       if (changedFlag) {
         result = multiplyNumbers(num1, num2);
-        prevResult = result
-        inputFlag = true;
-        changedFlag = false;
+        setPrevResult(result);
+        if (checkMax(result)) break;
       }
       break;
     case 'divide':
@@ -169,9 +170,8 @@ function operate(operator, num1, num2) {
       }
       if (changedFlag) {
         result = divideNumbers(num1, num2);
-        prevResult = result
-        inputFlag = true;
-        changedFlag = false;
+        setPrevResult(result);
+        if (checkMax(result)) break;
       }
       break;
     default:
@@ -192,7 +192,6 @@ function loadDefaults() {
   currDispOperating.textContent = DEFAULT_STR;
   inputFlag = false;
   changedFlag = true;
-
   updateCurrentInput(currInput);
 }
 
@@ -208,7 +207,24 @@ function operatorTranslator(operator) {
 }
 
 function roundNumbers(num) {
-  return Math.round(num * 1000)/1000;
+  return Math.round(num * 1000) / 1000;
+}
+
+function checkMax(result) {
+
+  if (result.toString().length > MAX_INPUT) {
+    loadDefaults();
+    currDispOperating.textContent = 'number too long';
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function setPrevResult(result) {
+  prevResult = roundNumbers(result)
+  inputFlag = true;
+  changedFlag = false;
 }
 
 window.onload = () => {
