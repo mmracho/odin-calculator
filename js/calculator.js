@@ -29,8 +29,8 @@ let currInput;
 let prevResult;
 let currOperator;
 let result;
-let inputFlag = false;
-let changedFlag = true;
+let inputFlag;
+let changedFlag;
 
 function initializeCalc() {
   const buttons = document.getElementById('calc-buttons');
@@ -53,7 +53,7 @@ function getInput() {
       inputFlag = false;
       changedFlag = true;
     }
-    updateCurrentInput();
+    updateCurrentInput(currInput);
   } else {  // if not do smelse
     switch (this.value) {
       case 'ce':
@@ -68,11 +68,20 @@ function getInput() {
       case 'plus-minus': // still have issue with maximum values
         currInput = (-1 * currInput).toString();
         changedFlag = true;
+        updateCurrentInput(currInput);
         break;
       case 'decimal':
         break;
       case 'equals':
         // if operator empty set currInput and equals
+        if (currOperator == DEFAULT_STR) {
+          currDispOperating.textContent = `${prevResult} ${operatorTranslator(this.value)}`;
+        } else {
+          currDispOperating.textContent = `${prevResult} ${operatorTranslator(currOperator)} ${currInput} ${operatorTranslator(this.value)} `;
+          changedFlag = true;
+          operate(currOperator, currInput, prevResult);
+        }
+        updateCurrentInput(result);
         break;
       default:
         //console.log(this.value, currInput, prevResult, result);
@@ -82,17 +91,20 @@ function getInput() {
             changedFlag = false;
             inputFlag = true;
             currOperator = this.value;
+            updateCurrentInput(currInput);
           } else {
             operate(currOperator, currInput, prevResult);
             currOperator = this.value;
+            updateCurrentInput(result);
           }
         } else {
           operate(currOperator, currInput, prevResult)
           currOperator = this.value;
+          updateCurrentInput(result);
         }
-        currDispOperating.textContent = prevResult + this.value;
+        currDispOperating.textContent = `${prevResult} ${operatorTranslator(this.value)}`;
     }
-    updateCurrentInput();
+
   }
 }
 
@@ -102,10 +114,11 @@ function delFromInput() {
   } else {
     currInput = currInput.slice(0, -1);
   }
+  updateCurrentInput(currInput);
 }
 
-function updateCurrentInput() {
-  currDispInput.textContent = Number(currInput).toLocaleString(navigator.language);
+function updateCurrentInput(disp) {
+  currDispInput.textContent = Number(disp).toLocaleString(navigator.language);
 }
 
 function addNumbers(num1, num2) {
@@ -117,11 +130,11 @@ function subtractNumbers(num1, num2) {
 }
 
 function multiplyNumbers(num1, num2) {
-  return (Number(num2) * Number(num1)).toString();;
+  return (Number(num1) * Number(num2)).toString();
 }
 
 function divideNumbers(num1, num2) {
-  return;
+    return (Number(num2) / Number(num1)).toString();
 }
 
 function operate(operator, num1, num2) {
@@ -129,7 +142,6 @@ function operate(operator, num1, num2) {
     case 'add':
       if (changedFlag) {
         result = addNumbers(num1, num2);
-        currInput = result
         prevResult = result
         inputFlag = true;
         changedFlag = false;
@@ -138,16 +150,32 @@ function operate(operator, num1, num2) {
     case 'subtract':
       if (changedFlag) {
         result = subtractNumbers(num1, num2);
-        currInput = result
         prevResult = result
         inputFlag = true;
         changedFlag = false;
       }
       break;
-    case '*':
-      result = multiplyNumbers(num1, num2);
-    case '/':
-      result = divideNumbers(num1, num2);
+    case 'multiply':
+      if (changedFlag) {
+        result = multiplyNumbers(num1, num2);
+        prevResult = result
+        inputFlag = true;
+        changedFlag = false;
+      }
+      break;
+    case 'divide':
+      if (num1 == '0') {
+        loadDefaults();
+        currDispOperating.textContent = 'bro stop dividing by 0';
+        break;
+      }
+      if (changedFlag) {
+        result = divideNumbers(num1, num2);
+        prevResult = result
+        inputFlag = true;
+        changedFlag = false;
+      }
+      break;
     default:
       result = 'OOPS';
   }
@@ -155,6 +183,7 @@ function operate(operator, num1, num2) {
 
 function clearInput() {
   currInput = DEFAULT_NUM;
+  updateCurrentInput(currInput);
 }
 
 function loadDefaults() {
@@ -163,6 +192,21 @@ function loadDefaults() {
   currOperator = DEFAULT_STR;
   result = DEFAULT_NUM;
   currDispOperating.textContent = DEFAULT_STR;
+  inputFlag = false;
+  changedFlag = true;
+
+  updateCurrentInput(currInput);
+}
+
+function operatorTranslator(operator) {
+  switch (operator) {
+    case 'add': return '+';
+    case 'subtract': return '-';
+    case 'multiply': return '×';
+    case 'divide': return '÷';
+    case 'equals': return '=';
+    default: return 'OOPS';
+  }
 }
 
 window.onload = () => {
