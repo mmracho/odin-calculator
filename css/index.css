@@ -68,6 +68,7 @@ header {
   border: 0.1rem solid black;
   box-sizing: border-box;
   border-radius: 10%;
+  background-color: #FAF9F9;
 }
 
 .calc-button:hover {
@@ -97,4 +98,23 @@ img.ft-imgs {
 
 img.ft-imgs:hover {
   filter: invert(50%);
+}
+
+#button-equals {
+  background-color: #AA8CB2;
+}
+
+#button-clear-all,
+#button-clear-input {
+  background-color: #EB8D6D;
+}
+
+#button-delete,
+#button-divide,
+#button-multiply,
+#button-subtract,
+#button-add,
+#button-pos-neg,
+#button-decimal {
+  background-color: #d3d2d2;
 }
