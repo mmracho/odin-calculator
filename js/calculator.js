@@ -46,7 +46,6 @@ function initializeCalc() {
 }
 
 function getInput() {
-  // if a number add to current input
   if (Number(this.value) || this.value == 0) {
     if (currInput.length < MAX_INPUT) {
       currInput = (inputFlag || currInput == DEFAULT_NUM) ? this.value : currInput + this.value;
@@ -54,7 +53,7 @@ function getInput() {
       changedFlag = true;
     }
     updateCurrentInput(currInput);
-  } else {  // if not do smelse
+  } else {
     switch (this.value) {
       case 'ce':
         clearInput();
@@ -84,7 +83,6 @@ function getInput() {
         updateCurrentInput(result);
         break;
       default:
-        //console.log(this.value, currInput, prevResult, result);
         if (currOperator == DEFAULT_STR) {
           if (prevResult == DEFAULT_NUM) {
             prevResult = currInput;
@@ -122,19 +120,19 @@ function updateCurrentInput(disp) {
 }
 
 function addNumbers(num1, num2) {
-  return (Number(num1) + Number(num2)).toString();
+  return (roundNumbers(Number(num1) + Number(num2))).toString();
 }
 
 function subtractNumbers(num1, num2) {
-  return (Number(num2) - Number(num1)).toString();
+  return (roundNumbers(Number(num2) - Number(num1))).toString();
 }
 
 function multiplyNumbers(num1, num2) {
-  return (Number(num1) * Number(num2)).toString();
+  return (roundNumbers(Number(num1) * Number(num2))).toString();
 }
 
 function divideNumbers(num1, num2) {
-    return (Number(num2) / Number(num1)).toString();
+    return (roundNumbers(Number(num2) / Number(num1))).toString();
 }
 
 function operate(operator, num1, num2) {
@@ -207,6 +205,10 @@ function operatorTranslator(operator) {
     case 'equals': return '=';
     default: return 'OOPS';
   }
+}
+
+function roundNumbers(num) {
+  return Math.round(num * 10)/10;
 }
 
 window.onload = () => {
