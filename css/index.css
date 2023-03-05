@@ -1,18 +1,19 @@
 * {
   margin: 0;
-  border: 1px solid red;
   padding: 0;
-}
-
-header {
-  background-color: #372C38;
-  color: white;
+  border: 1px solid red;
+  box-sizing: border-box;
 }
 
 body {
   display: flex;
   flex-direction: column;
   background-color: #888595;
+}
+
+header {
+  background-color: #372C38;
+  color: white;
 }
 
 .main-content {
@@ -26,16 +27,15 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
 }
 
 img.ft-imgs {
-  padding: 5px;
-  width: 35px;
-  height: 35px;
+  width: 2.5rem;
+  height: 2.5rem;
   filter: brightness(0%) saturate(100%) invert(100%);
 }
 
 img.ft-imgs:hover {
-  filter: brightness(80%) saturate(100%);
+  filter: invert(50%);
 }
