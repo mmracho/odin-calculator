@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  border: 1px solid red;
+  border: 0px solid red;
   box-sizing: border-box;
 }
 
@@ -33,7 +33,6 @@ header {
   box-sizing: border-box;
   border: 2px solid black;
   text-align: right;
-
   display: flex;
   flex-direction: column;
 }
